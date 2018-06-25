@@ -1,7 +1,7 @@
 # Programs to code:
 
-1) Create Phase diagram from GX curves
-2) Mark Spinodal in the phase diagram
+1) ~~Create Phase diagram from GX curves~~ (Completed)
+2) ~~Mark Spinodal in the phase diagram~~ (Completed)
 3) Simple diffusion profile using explicit method
 4) Simple diffusion profile using implicit method
 5) Explicit method with right end kept at C=0 (Dirichlet Boundary)
