@@ -2,7 +2,7 @@ clear all;
 
 %Parameters
 
-N=128;  %Typically in spectral methods N = 2^n
+N=128;
 dx=0.5;
 dt=0.01;
 D=1.0;
@@ -19,7 +19,6 @@ for i=1:N
     % Algebraic modification to bring sin in the range [0, 1] 
     % by adding 1 and multiplying by 0.5 
     conc_old(i)=0.5*(1+sin(2*pi*m*i*dx/N));
-    conc(i)=0;
 end
 
 plot(conc_old,'b*'); ylabel('Composition'), xlabel('Distance');
