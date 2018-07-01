@@ -17,9 +17,9 @@ conc(N)=0;
 A(1,1)=1;
 A(N,N)=0;
 
-for j=1:N
-    conc_old(j, 1)=conc(j, 1);
-end
+%For ensuring concentration at ends at initial time is consistent
+conc_old(1)=1;
+conc_old(N)=0;
 
 %Plot initial profile
 plot(conc, 'b'), xlabel('Distance'), ylabel('Composition');
