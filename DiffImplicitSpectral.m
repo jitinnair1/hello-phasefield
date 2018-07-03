@@ -21,7 +21,6 @@ hold on
 halfN=N/2;
 delk=2*pi/N;
 
-conc_hat=fft(conc);
 %Evolution
 for m=1:15 %Loop for time steps
     
