@@ -2,7 +2,7 @@ clear all;
 N=128;
 D=1;
 m=2;
-dt=0.1;
+dt=0.01;
 
 %Declararions
 conc=zeros(N,1);
@@ -26,7 +26,7 @@ for m=1:15 %Loop for time steps
     
     conc_hat=fft(conc);
     
-    for n=1:300 %Loop for calculation
+    for n=1:1500 %Loop for calculation
         
         for i=1:N
             
