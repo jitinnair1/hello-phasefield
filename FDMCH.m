@@ -7,7 +7,7 @@ m=2;
 kappa=1.0;
 A=1.0;
 beta1=dt/dx*dx;
-beta2=kappa*beta1/dx*dx;
+beta2=2*kappa*beta1/dx*dx;
 
 % Declarations
 conc=zeros(N,1);
@@ -16,6 +16,7 @@ conc_old=zeros(N,1);
 % Initial profile
 for i=1:N
     conc_old(i)=0.5*(1+sin(2*pi*m*i/N));
+    % conc_old(i)=sin(2*pi*m*i/N);
 end
 
 plot(conc_old, 'r*')
@@ -29,8 +30,8 @@ end
 
 % Evolve the profile
 
-for j=1:15
-    for k=1:60000
+for j=1:20
+    for k=1:20000
         for i=1:N
             w=i-1;
             ww=i-2;
@@ -48,11 +49,14 @@ for j=1:15
             if(e>N)
                 e=e-N;
             end
-            conc(i)=conc_old(i) + beta1*(g(w)-2*g(i)+g(e)) - 2*beta2*(conc_old(ww)-4*conc_old(w)+6*conc_old(i)-4*conc_old(e) + conc_old(ee));
+
+            % ellipsis are for text wrap in MATLAB editor window
+
+            conc(i)=conc_old(i) + beta1*(g(w)-2*g(i)+g(e))...
+                - beta2*(conc_old(ww)-4*conc_old(w)+6*conc_old(i)...
+                -4*conc_old(e) + conc_old(ee));
+            conc_old(i)=conc(i);
         end
-        for i=1:N
-                conc_old(i)=conc(i);
-            end
-    end   
-    plot(conc)
+    end
+    plot(conc);
 end
