@@ -1,8 +1,8 @@
 clear all;
 D=1.0;
-dt=0.001;
+dt=0.5;
 N=128;
-m=1;
+m=2;
 A=1.0;
 
 % Declarations
@@ -34,26 +34,25 @@ delk=2*pi/N;
 c_hat=fft(conc);
 g_hat=fft(g);
 
-for j=1:2
-    for p=1:10000
+for p=1:80000
+    
+    for i=1:N
         
-        for i=1:N
-            
-            %Periodic Boundary Condition
-            if ((i) <= halfN) %we take (i-1) to include the k = 0 point
-                k=(i)*delk;
-            end
-            
-            if ((i) > halfN)
-                k=(i)*delk;
-            end
-            
-            k2=k*k;
-            k4=k2*k2;
-            
-            c_hat(i)=(c_hat(i)-dt*k2*g_hat(i))/(1+2*k4*dt);
+        %Periodic Boundary Condition
+        if ((i) <= halfN) %we take (i-1) to include the k = 0 point
+            k=(i)*delk;
         end
-        conc=real(ifft(c_hat));
+        
+        if ((i) > halfN)
+            k=(i)*delk;
+        end
+        
+        k2=k*k;
+        k4=k2*k2;
+        
+        c_hat(i)=(c_hat(i)-dt*k2*g_hat(i))/(1+2*k4*dt);
     end
-    plot(conc);
+    conc=real(ifft(c_hat));
 end
+plot(conc);
+
