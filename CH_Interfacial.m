@@ -1,8 +1,8 @@
 clear all;
 D=1.0;
-dt=0.1;
+dt=0.5;
 N=128;
-m=4;
+m=2;
 A=1.0;
 kappa=1.0;
 
@@ -17,15 +17,12 @@ for i=1:N
     end
 end
 
-plot(conc, 'r*')
+plot(conc, 'r')
 hold on
 
 % Define g
 g=zeros(N,1);
 
-for i=1:N
-    g(i)=2*A*conc(i).*(1-conc(i)).*(1-2*conc(i));
-end
 
 % Periodic Boundary
 halfN=N/2;
@@ -33,29 +30,35 @@ delk=2*pi/N;
 
 % Evolve the profile
 
-% FFT
-c_hat=fft(conc);
-g_hat=fft(g);
-
-for p=1:500
+for p=1:60
+    
+    % Define g
+    g=2*A*conc.*(1-conc).*(1-2*conc);
+    
+    % FFT
+    c_hat=fft(conc);
+    g_hat=fft(g);
     
     for i=1:N
         
         %Periodic Boundary Condition
-        if ((i) <= halfN) %we take (i-1) to include the k = 0 point
+        if ((i) <= halfN)
             k=(i)*delk;
         end
         
         if ((i) > halfN)
-            k=(i)*delk;
+            k=(i-N)*delk;
         end
         
         k2=k*k;
         k4=k2*k2;
         
         c_hat(i)=(c_hat(i)-dt*k2*g_hat(i))/(1+2*k4*dt);
+        
     end
+    
     conc=real(ifft(c_hat));
+    
 end
 plot(conc);
 
@@ -77,7 +80,7 @@ c_hat=fft(conc);
 %Periodic Boundary Condition
 for i=1:N
     
-    if ((i) <= halfN) %we take (i-1) to include the k = 0 point
+    if ((i) <= halfN)
         k=(i)*delk;
     end
     
@@ -85,13 +88,15 @@ for i=1:N
         k=(i)*delk;
     end
     
+    % Transform to fourier space for calculating derivative
     c_prime(i)=real(ifft(c_hat(i)*complex(0,1)*k));
+    
 end
 
 for i=1:N
     energy2 = energy2 + kappa*c_prime(i)*c_prime(i);
 end
 
-ans1=0.5*energy1;
-ans2=0.5*energy2;
-ans3=0.5*(energy1 + energy2);
+E1S=0.5*energy1;
+E2S=0.5*energy2;
+E3S=0.5*(energy1 + energy2);

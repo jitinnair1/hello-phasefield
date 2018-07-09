@@ -1,6 +1,6 @@
 D=1.0;
-dx=0.5;
-dt=0.001;
+dx=0.1;
+dt=0.01;
 N=128;
 m=4;
 kappa=1.0;
@@ -20,47 +20,53 @@ for i=1:N
     end
 end
 
-plot(conc_old, 'r*')
+plot(conc_old, 'r')
 hold on
 
 % Define g
 g=zeros(N,1);
-for i=1:N
-    g(i)=2*A*conc_old(i).*(1-conc_old(i)).*(1-2*conc_old(i));
-end
 
 % Evolve the profile
 
-for j=1:2
-    for k=1:10000
-        for i=1:N
-            w=i-1;
-            ww=i-2;
-            e=i+1;
-            ee=i+2;
-            if (ww<1)
-                ww=ww+N;
-            end
-            if (w<1)
-                w=w+N;
-            end
-            if (ee>N)
-                ee=ee-N;
-            end
-            if(e>N)
-                e=e-N;
-            end
 
-            % ellipsis are for text wrap in MATLAB editor window
-
-            conc(i)=conc_old(i) + beta1*(g(w)-2*g(i)+g(e))...
-                - beta2*(conc_old(ww)-4*conc_old(w)+6*conc_old(i)...
-                -4*conc_old(e) + conc_old(ee));
-            conc_old(i)=conc(i);
+for k=1:8000
+    
+    for i=1:N
+        
+        % Define g
+        g=2*A*conc_old.*(1-conc_old).*(1-2*conc_old);
+       
+        w=i-1;
+        ww=i-2;
+        e=i+1;
+        ee=i+2;
+        
+        if (ww<1)
+            ww=ww+N;
         end
+        if (w<1)
+            w=w+N;
+        end
+        if (ee>N)
+            ee=ee-N;
+        end
+        if(e>N)
+            e=e-N;
+        end
+        
+        % ellipsis are for text wrap in MATLAB editor window
+        
+        conc(i)=conc_old(i) + beta1*(g(w)-2*g(i)+g(e))...
+            - beta2*(conc_old(ww)-4*conc_old(w)+6*conc_old(i)...
+            -4*conc_old(e) + conc_old(ee));
+        
+        conc_old(i)=conc(i);
+        
     end
-    plot(conc);
+    
 end
+plot(conc_old);
+
 
 
 % Calculation of Interfacial energy
@@ -68,8 +74,9 @@ energy1=0;
 energy2=0;
 
 for i=1:N
-    energy1=energy1 + A*conc(i).*conc(i).*(1-conc(i).*conc(i)).*(1-conc(i).*conc(i));
-end 
+    energy1=energy1 + A*conc_old(i).*conc_old(i).*(1-conc_old(i)...
+        .*conc_old(i)).*(1-conc_old(i).*conc_old(i));
+end
 
 % Interfacial For FDM?
 for i=1:N
@@ -81,13 +88,13 @@ for i=1:N
     if (e>N)
         e=e-N;
     end
-    c_prime(i)=(conc(w)-2*conc(i)+conc(e))/dx*dx;
+    c_prime(i)=(conc_old(w)-2*conc_old(i)+conc_old(e))/dx*dx;
 end
 
 for i=1:N
     energy2 = energy2 + kappa*c_prime(i)*c_prime(i);
 end
 
-ans1=0.5*energy1;
-ans2=0.5*energy2;
-ans3=0.5*(energy1 + energy2);
+E1F=0.5*energy1;
+E2F=0.5*energy2;
+E3F=0.5*(energy1 + energy2);
