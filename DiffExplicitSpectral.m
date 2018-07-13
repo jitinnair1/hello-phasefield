@@ -3,6 +3,8 @@ N=128;
 D=1;
 m=2;
 dt=0.01;
+dx=1;
+alpha=D*dt/(dx*dx);
 
 %Declararions
 conc=zeros(N,1);
@@ -29,21 +31,25 @@ for m=1:8 %Loop for time steps
         
         
         
-        for i=1:N
+        for i=1:N-1
             
             conc_hat=fft(conc);
             
+            w=i-1;
+            e=i+1;
+            
             % i-1 so as to include the k=0 point
-            if ((i-1)<halfN)
-                k=(i-1)*delk;
+            if (w<1)
+                w=i+N;
             end
             
-            if ((i-1)>=halfN)
-                k=(i-1-N)*delk;
+            if (e>N)
+                e=i-N;
             end
             
             %Implict condition
-            conc_hat(i,1)=conc_hat(i,1)/(1+D*k*k*dt); 
+            conc_hat(i,1)=conc_hat(i,1) + alpha*(conc_hat(w,1)...
+                - 2*conc_hat(i,1) + conc_hat(e,1)); 
             
             conc=real(ifft(conc_hat));
         end

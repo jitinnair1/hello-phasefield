@@ -78,17 +78,17 @@ for i=1:N
         .*conc_old(i)).*(1-conc_old(i).*conc_old(i));
 end
 
-% Interfacial For FDM?
+% Interfacial For FDM
 for i=1:N
     w=i-1;
     e=i+1;
     if (w<1)
-        w=N-w;
+        w=w+N;
     end
     if (e>N)
         e=e-N;
     end
-    c_prime(i)=(conc_old(w)-2*conc_old(i)+conc_old(e))/dx*dx;
+    c_prime(i)=(conc_old(w)-2*conc_old(i)+conc_old(e))/(dx*dx);
 end
 
 for i=1:N

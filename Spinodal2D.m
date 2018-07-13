@@ -43,7 +43,9 @@ for z=1:50
             for j=1:Ny
                 
                 %Periodic Boundary Condition
-                if ((i-1) <= halfNx) %we take (i-1) to include the k = 0 point
+                
+                %we take (i-1) to include the k = 0 point
+                if ((i-1) <= halfNx)
                     kx=(i-1)*delkx;
                 end
                 
@@ -51,7 +53,7 @@ for z=1:50
                     kx=(i-1-Nx)*delkx;
                 end
                 
-                if ((j-1) <= halfNy) %we take (i-1) to include the k = 0 point
+                if ((j-1) <= halfNy)
                     ky=(j-1)*delky;
                 end
                 

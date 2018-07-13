@@ -55,9 +55,11 @@ for p=1:60
         
         c_hat(i)=(c_hat(i)-dt*k2*g_hat(i))/(1+2*k4*dt);
         
+        
+        conc=real(ifft(c_hat));
     end
     
-    conc=real(ifft(c_hat));
+    
     
 end
 plot(conc);
@@ -75,17 +77,18 @@ end
 
 % energy 2
 
-c_hat=fft(conc);
 
 %Periodic Boundary Condition
 for i=1:N
     
+    c_hat=fft(conc);
+
     if ((i) <= halfN)
         k=(i)*delk;
     end
     
     if ((i) > halfN)
-        k=(i)*delk;
+        k=(i-N)*delk;
     end
     
     % Transform to fourier space for calculating derivative
