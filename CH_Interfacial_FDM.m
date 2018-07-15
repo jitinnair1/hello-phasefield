@@ -1,8 +1,7 @@
 D=1.0;
-dx=0.1;
-dt=0.01;
+dx=1;
+dt=0.1;
 N=128;
-m=4;
 kappa=1.0;
 A=1.0;
 beta1=dt/dx*dx;
@@ -12,6 +11,9 @@ beta2=2*kappa*beta1/dx*dx;
 conc=zeros(N,1);
 conc_old=zeros(N,1);
 c_prime=zeros(N,1);
+global E1F
+global E2F
+global E3F
 
 % Initial profile
 for i=1:N
@@ -89,11 +91,9 @@ for i=1:N
         e=e-N;
     end
     c_prime(i)=(conc_old(w)-2*conc_old(i)+conc_old(e))/(dx*dx);
-end
-
-for i=1:N
     energy2 = energy2 + kappa*c_prime(i)*c_prime(i);
 end
+
 
 E1F=0.5*energy1;
 E2F=0.5*energy2;

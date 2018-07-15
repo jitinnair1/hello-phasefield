@@ -31,7 +31,7 @@ mesh(phi);
 view(2)
 pause(0)
 
-for s=1:25
+for s=1:10
     for p=1:150
         
         %Define g

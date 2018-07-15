@@ -6,9 +6,13 @@ m=2;
 A=1.0;
 kappa=1.0;
 
+
 % Declarations
 conc=zeros(N,1);
 c_prime=zeros(N, 1);
+global E1S
+global E2S
+global E3S
 
 % Initial profile
 for i=1:N
@@ -83,16 +87,17 @@ for i=1:N
     
     c_hat=fft(conc);
 
-    if ((i) <= halfN)
-        k=(i)*delk;
+    if ((i-1) <= halfN)
+        k=(i-1)*delk;
     end
     
-    if ((i) > halfN)
-        k=(i-N)*delk;
+    if ((i-1) > halfN)
+        k=(i-1-N)*delk;
     end
     
     % Transform to fourier space for calculating derivative
-    c_prime(i)=real(ifft(c_hat(i)*complex(0,1)*k));
+    c_hat(i)=c_hat(i)*complex(0,1)*k;
+    c_prime(i)=real(ifft(c_hat(i)));
     
 end
 
