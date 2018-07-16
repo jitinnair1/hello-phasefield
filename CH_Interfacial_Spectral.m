@@ -1,18 +1,16 @@
 clear all;
 D=1.0;
-dt=0.5;
+dt=0.01;
 N=128;
 m=2;
 A=1.0;
 kappa=1.0;
-
+nstep=5000;
+col_labels={'bulk';'gradient';'total'}; 
 
 % Declarations
 conc=zeros(N,1);
 c_prime=zeros(N, 1);
-global E1S
-global E2S
-global E3S
 
 % Initial profile
 for i=1:N
@@ -34,7 +32,7 @@ delk=2*pi/N;
 
 % Evolve the profile
 
-for p=1:60
+for p=1:nstep
     
     % Define g
     g=2*A*conc.*(1-conc).*(1-2*conc);
@@ -58,12 +56,9 @@ for p=1:60
         k4=k2*k2;
         
         c_hat(i)=(c_hat(i)-dt*k2*g_hat(i))/(1+2*k4*dt);
-        
-        
-        conc=real(ifft(c_hat));
     end
     
-    
+    conc=real(ifft(c_hat));
     
 end
 plot(conc);
@@ -76,16 +71,15 @@ energy2=0;
 % energy1
 
 for i=1:N
-    energy1=energy1 + A*conc(i)*conc(i)*(1-conc(i)*conc(i))*(1-conc(i)*conc(i));
+    energy1=energy1 + A*conc(i)*conc(i)*(1-conc(i))*(1-conc(i));
 end
 
 % energy 2
 
+ c_hat=fft(conc);
 
 %Periodic Boundary Condition
 for i=1:N
-    
-    c_hat=fft(conc);
 
     if ((i-1) <= halfN)
         k=(i-1)*delk;
@@ -96,10 +90,10 @@ for i=1:N
     end
     
     % Transform to fourier space for calculating derivative
-    c_hat(i)=c_hat(i)*complex(0,1)*k;
-    c_prime(i)=real(ifft(c_hat(i)));
-    
+    c_hat(i)=c_hat(i)*complex(0,1)*k;   
 end
+
+c_prime=real(ifft(c_hat));
 
 for i=1:N
     energy2 = energy2 + kappa*c_prime(i)*c_prime(i);
@@ -108,3 +102,5 @@ end
 E1S=0.5*energy1;
 E2S=0.5*energy2;
 E3S=0.5*(energy1 + energy2);
+EnergySpectral=[E1S; E2S; E3S];
+table(col_labels, EnergySpectral)

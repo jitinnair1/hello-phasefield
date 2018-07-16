@@ -1,10 +1,20 @@
+%% Spectral
 clear all;
 D=1.0;
-dt=0.5;
-N=64;
+dt=0.1;
+dx=1;
+N=128;
 m=2;
 A=1.0;
 kappa=1.0;
+energy1=0;
+energy2=0;
+energy3=0;
+energy4=0;
+nstep=1000;
+beta1=dt/dx*dx;
+beta2=2*kappa*beta1/dx*dx;
+col_labels={'bulk';'gradient';'total'}; 
 
 % Declarations
 concSpectral=zeros(N,1);
@@ -27,7 +37,7 @@ delk=2*pi/N;
 
 % Evolve the profile
 
-for p=1:60
+for p=1:nstep
     
     % Define g
     g=2*A*concSpectral.*(1-concSpectral).*(1-2*concSpectral);
@@ -39,12 +49,12 @@ for p=1:60
     for i=1:N
         
         %Periodic Boundary Condition
-        if ((i) <= halfN)
-            k=(i)*delk;
+        if ((i-1) <= halfN)
+            k=(i-1)*delk;
         end
         
-        if ((i) > halfN)
-            k=(i-N)*delk;
+        if ((i-1) > halfN)
+            k=(i-1-N)*delk;
         end
         
         k2=k*k;
@@ -54,26 +64,48 @@ for p=1:60
         
         
         concSpectral=real(ifft(c_hat));
+    end    
+end
+
+% Calculation of Spectral Interfacial energy
+
+% energy1
+
+for i=1:N
+    energy1=energy1 + A*concSpectral(i)*concSpectral(i)...
+        *(1-concSpectral(i))*(1-concSpectral(i));
+end
+
+% energy 2
+
+%Periodic Boundary Condition
+c_hat=fft(concSpectral);
+for i=1:N
+
+    if ((i-1) <= halfN)
+        k=(i-1)*delk;
     end
     
+    if ((i-1) > halfN)
+        k=(i-1-N)*delk;
+    end
     
-    
+    % Transform to fourier space for calculating derivative
+    c_hat(i)=c_hat(i)*complex(0,1)*k;  
 end
-subplot(2,1,1)
-plot(concSpectral, 'r*');
 
-hold on
+c_prime=real(ifft(c_hat));
+
+for i=1:N
+    energy2 = energy2 + kappa*c_prime(i)*c_prime(i);
+end
+
+E1S=0.5*energy1;
+E2S=0.5*energy2;
+E3S=0.5*(energy1 + energy2);
+EnergySpectral=[E1S; E2S; E3S];
 
 %% FDM
-
-D=1.0;
-dx=0.1;
-dt=0.01;
-m=2;
-kappa=1.0;
-A=1.0;
-beta1=dt/dx*dx;
-beta2=2*kappa*beta1/dx*dx;
 
 % Declarations
 concFDM=zeros(N,1);
@@ -92,7 +124,7 @@ g=zeros(N,1);
 % Evolve the profile
 
 
-for k=1:8000
+for k=1:nstep
     
     for i=1:N
         
@@ -128,8 +160,36 @@ for k=1:8000
     end
     
 end
-subplot(2,1,1)
 plot(conc_old, 'b*');
+hold on
+plot(concSpectral, 'r*');
+hold on
+
+% Calculation of Interfacial energy
+
+for i=1:N
+    energy3=energy3 + A*conc_old(i)*conc_old(i)*(1-conc_old(i))*(1-conc_old(i));
+end
+
+% Interfacial For FDM
+for i=1:N
+    w=i-1;
+    e=i+1;
+    if (w<1)
+        w=w+N;
+    end
+    if (e>N)
+        e=e-N;
+    end
+    c_prime(i)=(conc_old(e)-conc_old(w))/(2*dx);
+    energy4 = energy4 + kappa*c_prime(i)*c_prime(i);
+end
+
+
+E1F=0.5*energy3;
+E2F=0.5*energy4;
+E3F=0.5*(energy3 + energy4);
+EnergyFDM=[E1F; E2F; E3F];
 
 
 %% Plot of Delta
@@ -138,7 +198,12 @@ difference=zeros(1, N);
 for i=1:N
     difference(i)=concSpectral(i)-conc_old(i);
 end
-subplot(2,1,2)
+clf;
 plot(difference, 'g*')
+
+%% Interfacial Energy - FDM vs Spectral
+
+table(col_labels, EnergyFDM, EnergySpectral)
+
 
 
