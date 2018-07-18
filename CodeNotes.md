@@ -11,10 +11,10 @@
 9) ~~Vary initial profile and solve the problems~~ (Completed)
 10) Take initial noise around 0.5 and see the evolution for random distribution
 11) ~~1D Cahn-Hilliard~~ (Completed)
-12) 1D Allen-Cahn
+12) ~~1D Allen-Cahn~~ (Completed)
 13) ~~Computing interfactial energy~~ (Completed)
 13) Coupling solving of Cahn-Hilliard and Allen-Cahn equations
-13) Show evolution of spinodal in 2D
-14) Show Gibbs-Thomson effect
+13) ~~Show evolution of spinodal in 2D~~ (Completed)
+14) ~~Show Gibbs-Thomson effect~~ (Completed)
 15) Show grain boundary grooving
 16) Show grain growth

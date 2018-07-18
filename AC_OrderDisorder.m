@@ -1,7 +1,5 @@
 clear all;
-Nx=128;
-Ny=128;
-L=1.0;
+Nx=128;Ny=128;L=1.0;
 dt=0.1;
 A=1.0;
 kappa=1.0;
@@ -34,7 +32,6 @@ for s=1:10
         %Define g
         g=A*phi.*(1-phi).*(1-2*phi);
         
-        
         %FFT
         phi_hat=fft2(phi);
         g_hat=fft2(g);
@@ -61,8 +58,7 @@ for s=1:10
                 
                 k2=kx*kx+ky*ky;
                 
-                phi_hat(i,j)=(phi_hat(i,j)-L*dt*g_hat(i,j))/(1+2*kappa*L*dt*k2);
-                
+                phi_hat(i,j)=(phi_hat(i,j)-L*dt*g_hat(i,j))/(1+2*kappa*L*dt*k2);      
                 
             end
         end
@@ -74,5 +70,3 @@ for s=1:10
     view(2)
     pause(1)
 end
-
-

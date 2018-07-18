@@ -62,9 +62,9 @@ for p=1:nstep
     conc=real(ifft(c_hat));
     
 end
-plot(conc);
+plot(conc, 'b*');
 
-x1=get_N(conc, 0.08, 0.12);
+x1=get_N(conc, 0.075, 0.125);
 x2=get_N(conc, 0.80, 0.95);
 width_spec=x2-x1;
 
@@ -75,11 +75,9 @@ x3=conc_analytical(0.1);
 x4=conc_analytical(0.9);
 
 width_analytical=x4-x3;
-
 width_data=[width_spec;width_analytical];
 
 table(col_labels, width_data)
-
 
 %% Functions
 
