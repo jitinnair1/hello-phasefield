@@ -12,6 +12,9 @@ for i=1:N
     if (i>N/4 && i<3*N/4)
         conc(i)=1;
     end
+    if ((i==N/4) || (i==3*N/4))
+        conc(i)=0.5;
+    end
 end
 
 % Define g
