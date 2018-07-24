@@ -1,27 +1,41 @@
+%{
+For any value of dx<0.4, the solution is unstable. This critical value of dx
+is given by stability analysis. For proof, refer Numerical Analysis
+by Richard L. Burden, J. Douglas Faires, Annette M. Burden.
+
+The critical condition is that alpha should be less than 0.5 where
+alpha = D*dt/(dx*dx)
+%}
+
+iflag=1;
+
+if (iflag==0)
+    dx=[0.5; 1; 1.5];
+end
+
+if (iflag==1)
+    dx=[0.3; 1; 1.5];
+end
+
+
 N=64;
-m=8;
-dt=[0.1; 0.5];
-dx=[0.4; 0.8; 1.2];
+m=4;
+wave_length=N/m;
+dt=0.1;
+
 np=numel(dx);
 istep=numel(dt);
 
 labels=strings(np, numel(dt));
-dx_by_dt=zeros(istep, 1);
+grid_points=zeros(istep, 1);
 for i=1:np
     for j=1:istep
-    CH_FDM_GridPoint(N, m, dx(i), dt(j))
-    dx_by_dt(i,j)=dx(i)/dt(j);
-    labels(i,j)="dx="+string(dx(i))+" , dt="+string(dt(j));
-    hold on
+        DiffExplicinFunc(N, dx(i), dt(j), m);
+        grid_points(i, j)=N/dx(i);
+        labels(i,j)="dx="+string(dx(i));
+        hold on
     end
 end
-title('Effect of varying dx and dt');
+title('Effect of varying dx');
 legend(labels);
 hold off
-
-dx_by_dt(i,j)=dx_by_dt(i,j)/m;
-
-% Format Results before display
-col_labels=reshape(labels, [], 1);
-gridpoints_per_wavelength=reshape(dx_by_dt, [], 1);
-table(col_labels, gridpoints_per_wavelength)
