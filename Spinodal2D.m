@@ -29,8 +29,8 @@ delky=2*pi/Ny;
 % Evolve the profile
 
 
-for z=1:50
-    for p=1:20
+for z=1:4
+    for p=1:250
         
         g=2*A*conc.*(1-conc).*(1-2*conc);
         
