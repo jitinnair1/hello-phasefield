@@ -1,4 +1,8 @@
-%% Numerical Solution
+% This is a very crude approach and the error is significant. The
+% analytical solution used here is that obtained by subratacting the values
+% of x corresponding to concentrations of 0.9 and 0.1 respectively to get
+% width. 
+
 clear all;
 D=1.0;
 dt=0.01;
@@ -67,8 +71,8 @@ for p=1:nstep
 end
 plot(conc, 'b*');
 
-x1=get_N(conc, 0.1);
-x2=get_N(conc, 0.9);
+x1=get_N(conc, 0.075, 0.125);
+x2=get_N(conc, 0.80, 0.95);
 width_spec=x2-x1;
 
 
@@ -88,7 +92,7 @@ function x_value = conc_analytical(c1)
 x_value=2*atanh(2*c1-1);
 end
 
-function N_avg = get_N(conc_vector, c_value)
+function N_avg = get_N(conc_vector, lim_a, lim_b)
 count=0;
 sum_N=0;
 istep=numel(conc_vector)/2;

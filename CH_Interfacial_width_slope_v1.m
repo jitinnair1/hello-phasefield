@@ -1,12 +1,11 @@
-%% Numerical Solution
+%In this version, CH solution is by FFT and width calculation is by taking
+%derivative of conc using central difference followed by intepolation at
+%ends of the interface. This is a wrong approach. The interpolation should
+%be done about the point of symmetry as in v0 and v2 of the code.
+
 clear all;
-D=1.0;
-dt=0.01;
-N=128;
-m=2;
-A=1.0;
-kappa=1.0;
-nstep=5000;
+D=1.0;dt=0.01;N=400;
+A=1.0;kappa=1.0;nstep=8000;
 col_labels={'width_spec';'width_analytical'}; 
 
 % Declarations
@@ -18,6 +17,9 @@ for i=1:N
     if (i>N/4 && i<3*N/4)
         conc(i)=1;
     end
+    if ((i==N/4) || (i==3*N/4))
+        conc(i)=0.5;
+    end
 end
 
 plot(conc, 'r')
@@ -26,13 +28,11 @@ hold on
 % Define g
 g=zeros(N,1);
 
-
 % Periodic Boundary
 halfN=N/2;
 delk=2*pi/N;
 
 % Evolve the profile
-
 for p=1:nstep
     
     % Define g
@@ -64,37 +64,32 @@ for p=1:nstep
 end
 plot(conc, 'b*');
 
-x1=get_N(conc, 0.075, 0.125);
-x2=get_N(conc, 0.80, 0.95);
+x1=get_N(conc, 0.1);
+x2=get_N(conc, 0.9);
 width_spec=x2-x1;
-
-
-%% Analytical solution
-
-x3=conc_analytical(0.1);
-x4=conc_analytical(0.9);
-
-width_analytical=x4-x3;
-width_data=[width_spec;width_analytical];
-
-table(col_labels, width_data)
+display(width_spec)
 
 %% Functions
 
-function x_value = conc_analytical(c1)
-x_value=2*atanh(2*c1-1);
-end
-
-function N_avg = get_N(conc_vector, lim_a, lim_b)
-count=0;
-sum_N=0;
+function x_value = get_N(conc_vector, c_value)
 istep=numel(conc_vector)/2;
+conc_vector=conc_vector-c_value;
+
 for i=1:istep
-    if (conc_vector(i)>lim_a && conc_vector(i)<lim_b)
-        sum_N=sum_N+i;
-        count=count+1;        
+    if(conc_vector(i)>0)
+        x1=i;
+        x2=i-1;
+        break;
     end
 end
-N_avg=sum_N/count;
+
+N1=conc_vector(x1)+c_value;
+N2=conc_vector(x2)+c_value;
+
+m=(N2-N1)/(x2-x1);
+c=N1-m*x1;
+
+x_value=(c_value-c)/m;
+
 end
 

@@ -3,7 +3,7 @@ For any value of dx<0.4, the solution is unstable. This critical value of dx
 is given by stability analysis. For proof, refer Numerical Analysis
 by Richard L. Burden, J. Douglas Faires, Annette M. Burden.
 
-The critical condition is that alpha should be less than 0.5 where
+The critical condition is that alpha should be less than or equal to 0.5 where
 alpha = D*dt/(dx*dx)
 %}
 

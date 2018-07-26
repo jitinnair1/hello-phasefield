@@ -3,7 +3,7 @@ dt=0.5;
 Nx=128;
 Ny=128;
 A=1.0;
-plot_step=10;
+plot_step=100;
 
 more off;
 
@@ -34,7 +34,7 @@ delky=2*pi/Ny;
 
 
 for z=1:plot_step
-    for p=1:25
+    for p=1:50
         
         g=2*A*conc.*(1-conc).*(1-2*conc);
         

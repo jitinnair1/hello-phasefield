@@ -4,8 +4,8 @@ dt=0.01;
 N=128;
 kappa=1.0;
 A=1.0; 
-beta1=dt/dx*dx;
-beta2=2*kappa*beta1/dx*dx;
+beta1=dt/(dx*dx);
+beta2=2*kappa*beta1/(dx*dx);
 nstep=5000;
 col_labels={'bulk';'gradient';'total'}; 
 

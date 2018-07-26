@@ -1,8 +1,9 @@
-%% Numerical Solution
+%In this version, CH solution is by FFT and width calculation is done by taking
+%derivative of conc using central difference followed by intepolation.
+
 clear all;
-D=1.0;dt=0.01;N=128;
-A=1.0;kappa=1.0;nstep=8000;
-col_labels={'width_spec';'width_analytical'}; 
+D=1.0;dt=0.1;N=400;
+A=1.0;kappa=1.0;nstep=2000; 
 
 % Declarations
 conc=zeros(N,1);
@@ -38,11 +39,11 @@ for p=1:nstep
     for i=1:N
         %Periodic Boundary Condition
         if ((i) <= halfN)
-            k=(i)*delk;
+            k=(i-1)*delk;
         end
         
         if ((i) > halfN)
-            k=(i-N)*delk;
+            k=(i-1-N)*delk;
         end
         
         k2=k*k;
@@ -54,37 +55,18 @@ for p=1:nstep
     conc=real(ifft(c_hat));
 
 end
-plot(conc,'*b')
-title('Composition vs. Distance')
+
+% plot(conc,'b')
+% title('Composition vs. Distance'), xlabel('Distance'), ylabel('Composition')
 
 %% Calculating c_prime and interfacial width
-c_prime=get_diff(conc, 1);
-clf;
-plot(c_prime);
-ylabel('$\displaystyle\frac{dc}{dx}$','interpreter','latex')
-xlabel('N'), title('Variation of slope')
+c_prime=get_diff(conc, 1.0);
+
 [slope_val, slope_ind]=get_slope_val(c_prime);
-y0=conc(slope_ind);
-x0=slope_ind;
-m=slope_val;
-c0=y0-m*x0;
-width_spec=get_width(m, c0, 1, 0);
-
-%% Analytical solution
-x3=conc_analytical(0.1);
-x4=conc_analytical(0.9);
-width_analytical=x4-x3;
-
-% Collecting Interfacial results
-width_data=[width_spec;width_analytical];
-table(col_labels, width_data)
+width_spec=1/slope_val;
+display(width_spec)
 
 %% Functions
-
-% Solve Analytical Equation
-function x_value = conc_analytical(c1)
-x_value=2*atanh(2*c1-1);
-end
 
 % Get c_prime when input is conc
 function diff_vector = get_diff(conc_vector, dx)
@@ -94,12 +76,12 @@ for i=1:N
     w=i-1;
     e=i+1;
     if(w<1)
-        w=w+1;
+        w=w+N;
     end
     if(e>N)
-        e=e-1;
+        e=e-N;
     end
-    diff_vector(i)=(conc_vector(e)-conc_vector(w))/2*dx;
+    diff_vector(i)=(conc_vector(e)-conc_vector(w))/(2*dx);
 end
 end
 
@@ -116,11 +98,4 @@ for i=1:N
 end
 slope_val=val_max;
 slope_ind=max_ind;
-end
-
-% calculate interfacial width
-function width=get_width(slope, const, lim_max, lim_min)
-x1=(lim_min-const)/slope;
-x2=(lim_max-const)/slope;
-width=x2-x1;
 end
