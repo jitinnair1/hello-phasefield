@@ -1,5 +1,4 @@
-%In this version, CH solution is by FDM and width calculation is done by taking
-%derivative of conc using central difference followed by intepolation.
+%In this version, CH solution is by FDM and width calculation is done by taking derivative of conc using central difference followed by intepolation.
 
 clear all;
 D=1.0;dx=1;dt=0.1;N=400;A=1.0;kappa=1.0;nstep=2000;
