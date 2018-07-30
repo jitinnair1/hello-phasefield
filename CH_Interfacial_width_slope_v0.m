@@ -45,14 +45,13 @@ for p=1:nstep
         c_hat(i)=(c_hat(i)-dt*k2*g_hat(i))/(1+2*k4*dt);
     end
     conc=real(ifft(c_hat));
-
 end
 %% Calculating c_prime and interfacial width
 c_prime=get_diff(conc, 1.0);
 
 [slope_val, slope_ind]=get_slope_val(c_prime);
-width_spec=1/slope_val;
-display(width_spec)
+width=1/slope_val;
+display(width)
 %% Functions
 
 % Get c_prime when input is conc

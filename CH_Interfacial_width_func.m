@@ -71,5 +71,4 @@ m=(conc_vector(limb)-conc_vector(lima))/(limb-lima);
 c0=conc_vector(lim)-(m*lim);
 x2=(1.0-c0)/m;x1=-c0/m;
 width=x2-x1;
-
 end

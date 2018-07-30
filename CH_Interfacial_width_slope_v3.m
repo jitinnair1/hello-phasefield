@@ -49,11 +49,11 @@ end
 
 % plot(conc_old);title('Composition vs. Distance')
 
-c_prime=get_diff(conc, 1.0);
+c_prime=get_diff(conc_old, 1.0);
 
 [slope_val, slope_ind]=get_slope_val(c_prime);
-width_spec=1/slope_val;
-display(width_spec)
+width=1/slope_val;
+display(width)
 
 %% Functions
 
