@@ -3,7 +3,7 @@ dt=0.5;
 Nx=128;
 Ny=128;
 A=1.0;
-plot_step=100;
+plot_step=50;
 
 more off;
 
@@ -11,7 +11,6 @@ more off;
 conc=zeros(Nx,Ny);
 energy1=zeros(1, plot_step);
 energy2=zeros(1, plot_step);
-total_energy=zeros(1, plot_step);
 
 % Initial profile
 for i=1:Nx
@@ -92,12 +91,14 @@ xlabel('Iteration No.'), ylabel('Bulk Energy')
 plot (energy2, 'b*');
 title('Variation of Gradient Energy with successive iterations')
 xlabel('Iteration No.'), ylabel('Gradient Energy')
+%print('Grad_Energy','-dpng')
 
 %% Variation of Total Energy
 total_energy=energy1+energy2;
 plot (total_energy, 'g*');
 title('Variation of Total Energy with successive iterations')
 xlabel('Iteration No.'), ylabel('Total Energy')
+%print('Total_Energy','-dpng')
 
 %% Energy 1 Calculation
 function [energy1] = cal_energy1(conc, Nx, Ny)

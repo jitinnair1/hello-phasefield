@@ -19,6 +19,7 @@ for i=1:Nx
     end
 end
 
+save_res(Nx, Ny, Nz, 0, conc);
 
 % Periodic Boundary
 halfNx=Nx/2;
@@ -31,8 +32,8 @@ delkz=2*pi/Nz;
 % Evolve the profile
 
 
-for z=1:2
-    for p=1:5
+for z=1:10
+    for p=1:10
         
         g=2*A*conc.*(1-conc).*(1-2*conc);
         
@@ -43,8 +44,7 @@ for z=1:2
         
         for i=1:Nx
             for j=1:Ny
-                
-                for b=1:Nz
+                for l=1:Nz
                 
                 %Periodic Boundary Condition
                 if ((i-1) <= halfNx) %we take (i-1) to include the k = 0 point
@@ -63,19 +63,19 @@ for z=1:2
                     ky=(j-1-Ny)*delky;
                 end
                 
-                if ((b-1) <= halfNz) %we take (i-1) to include the k = 0 point
-                    kz=(b-1)*delkz;
+                if ((l-1) <= halfNz) %we take (i-1) to include the k = 0 point
+                    kz=(l-1)*delkz;
                 end
                 
-                if ((b-1) > halfNz)
-                    kz=(b-1-Nz)*delkz;
+                if ((l-1) > halfNz)
+                    kz=(l-1-Nz)*delkz;
                 end
                 
                 k2=kx*kx+ky*ky+kz*kz;
                 k4=k2*k2;
                 
                 
-                c_hat(i,j)=(c_hat(i,j)-dt*k2*g_hat(i,j))/(1+2*k4*dt);
+                c_hat(i,j,l)=(c_hat(i,j,l)-dt*k2*g_hat(i,j, l))/(1+2*k4*dt);
                 
                 end
                 
@@ -84,7 +84,56 @@ for z=1:2
         
         conc=real(ifftn(c_hat));
     end
-    
+    save_res(Nx, Ny, Nz, z, conc);
    
 end
 
+%% Save Results
+
+function []=save_res(nx, ny, nz, istep, data1)
+format long;
+
+% Open Output File
+fname=sprintf('time_%d.vtk', istep);
+out=fopen(fname, 'w');
+npoints=nx*ny*nz;
+
+% Format header of VTK file
+fprintf(out, '# vtk DataFile Version 2.0\n');
+fprintf(out, 'time_10.vtk\n');
+fprintf(out, 'ASCII\n');
+fprintf(out, 'DATASET STRUCTURED_GRID\n');
+
+% Co-ordinates of grid points
+fprintf(out, 'DIMENSIONS %5d %5d %5d\n', nx, ny, nz);
+fprintf(out, 'POINTS%7d float\n', npoints);
+
+dx=1.0;
+dy=1.0;
+dz=1.0;
+
+for i=1:nx
+    for j=1:ny
+        for k=1:nz
+        x=(i-1)*dx;
+        y=(j-1)*dy;
+        z=(k-1)*dz;
+        fprintf(out, '%14.6e %14.6e %14.6e\n', x, y, z);
+        end
+    end
+end
+
+% Write grid points
+fprintf(out, 'POINT_DATA %5d\n', npoints);
+fprintf(out, 'SCALARS CON float 1\n');
+fprintf(out, 'LOOKUP_TABLE default\n');
+
+for i=1:nx
+    for j=1:ny
+        for k=1:nz
+        fprintf(out, '%14.6e\n', data1(i, j, k));
+        end
+    end
+end
+fclose(out);
+end
