@@ -32,8 +32,8 @@ delkz=2*pi/Nz;
 % Evolve the profile
 
 
-for z=1:10
-    for p=1:10
+for z=1:40
+    for p=1:25
         
         g=2*A*conc.*(1-conc).*(1-2*conc);
         

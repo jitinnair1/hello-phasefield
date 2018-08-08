@@ -9,7 +9,7 @@
 7) ~~Implement implicit and explicit method with periodic boundary conditions~~ (Completed)
 8) ~~Explicit spectral method using FFT~~ (Completed)
 9) ~~Vary initial profile and solve the problems~~ (Completed)
-10) Take initial noise around 0.5 and see the evolution for random distribution
+10) ~~Take initial noise around 0.5 and see the evolution for random distribution~~ (Completed)
 11) ~~1D Cahn-Hilliard~~ (Completed)
 12) ~~1D Allen-Cahn~~ (Completed)
 13) ~~Computing interfactial energy~~ (Completed)

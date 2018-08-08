@@ -24,14 +24,17 @@ root2(i)=fzero(@(x) Gdprime(alpha(i), x), x1);
 end
 
 T=1./alpha;
-plot(min1, T),ylabel('Temperature'),xlabel('Composition');
-title('Phase Diagram')
+plot(min1, T,'b'),
+ylabel('Modified Temperature $(\frac{T}{\frac{\Omega}{R}})$'...
+    , 'interpreter', 'latex', 'fontsize', 24)
+xlabel('Composition','interpreter', 'latex' , 'fontsize', 18);
+title('Phase Diagram', 'interpreter', 'latex', 'fontsize', 24)
 hold on
-plot(min2, T);
+plot(min2, T,'b');
 hold on
-plot(root1, T);
+plot(root1, T,'r');
 hold on
-plot(root2, T);
+plot(root2, T,'r');
 
 %Free Energy Function
 function y=G(alpha, x)

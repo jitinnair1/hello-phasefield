@@ -8,10 +8,10 @@ dy=0.5;
 dt=0.1;
 kappa=1.0;
 L=1.0;
-nstep=5;
-nprint=10;
+nstep=100;
 ttime=0.0;
 dtime=0.005;
+r=zeros(1, nstep);
 
 
 %Initial configuration
@@ -84,31 +84,13 @@ for istep=1:nstep
                 glist(igrain)=0;
             end
             
+            r(istep)=get_radius(etas, Nx, Ny);
+            
         end
-    end
-    
-    %Print results every "nprint" steps
-    if (mod(istep, nprint)==0)
-        out2=fopen('area_frac.out', 'w');
-        eta2=zeros(Nx, Ny);
-        fprintf(out2,'%14.6e',ttime);
-        for igrain=1:ngrain
-            ncount=0;
-            for i=1:Nx
-                for j=1:Ny
-                    eta2(i, j)=eta2(i, j) + etas(i, j, igrain)^2;
-                    if (etas(i, j, igrain) >= 0.5)
-                        ncount=ncount+1;
-                    end
-                end
-            end
-            ncount=ncount/(Nx*Ny);
-            fprintf(out2,'%14.6e', ncount);
-            fprintf(out2, '\n');
-        end
-        save_res(Nx, Ny, dx, dy, istep, eta2);
     end
 end
+
+plot(r, '*')
 
 %% Initial Microstructure
 
@@ -158,45 +140,30 @@ dfdeta=A*(2.0*B*eta(i, j)*sum + eta(i,j)^3 - eta(i, j));
 
 end
 
-%% Save Results
+%% Calculate Radius
 
-function []=save_res(nx, ny, dx, dy, istep, data1)
-format long;
-
-% Open Output File
-fname=sprintf('time_%d.vtk', istep);
-out=fopen(fname, 'w');
-nz=1;
-npoints=nx*ny*nz;
-
-% Format header of VTK file
-fprintf(out, '# vtk DataFile Version 2.0\n');
-fprintf(out, 'time_10.vtk\n');
-fprintf(out, 'ASCII\n');
-fprintf(out, 'DATASET STRUCTURED_GRID\n');
-
-% Co-ordinates of grid points
-fprintf(out, 'DIMENSIONS %5d %5d %5d\n', nx, ny, nz);
-fprintf(out, 'POINTS%7d float\n', npoints);
-
-for i=1:nx
-    for j=1:ny
-        x=(i-1)*dx;
-        y=(j-1)*dy;
-        z=0.0;
-        fprintf(out, '%14.6e %14.6e %14.6e\n', x, y, z);
+function [radius] = get_radius(etas, Nx, Ny)
+eta=zeros(Nx, Ny);
+%Assign eta value to each grain
+for i=1:Nx
+    for j=1:Ny
+        eta(i, j)=etas(i, j, 1);
+    end
+end
+x0=Nx/2;
+y0=Ny/2;
+for m=1:y0
+    if (eta(x0, m) < 1)
+        rad_index_left=m;
+        break
     end
 end
 
-% Write grid points
-fprintf(out, 'POINT_DATA %5d\n', npoints);
-fprintf(out, 'SCALARS CON float 1\n');
-fprintf(out, 'LOOKUP_TABLE default\n');
-
-for i=1:nx
-    for j=1:ny
-        fprintf(out, '%14.6e\n', data1(i, j));
+for n=Ny:-1:y0
+    if (eta(x0, n) < 1)
+        rad_index_right=n;
+        break
     end
 end
-fclose(out);
+radius = 0.5*(rad_index_right - rad_index_left);
 end

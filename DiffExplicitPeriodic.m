@@ -7,7 +7,7 @@ dx=0.5;
 dt=0.01;
 D=1.0;
 alpha=D*dt/((dx)^2);
-m=2;
+m=4;
 
 %Declarartions
 conc=zeros(N, 1);
