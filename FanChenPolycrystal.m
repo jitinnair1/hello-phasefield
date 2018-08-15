@@ -64,7 +64,7 @@ for istep=1:nstep
                     dfdeta=free_energy_diff(i, j, ngrain, etas, eta, igrain);
                     
                     %Integrate
-                    eta(i,j)=eta(i,j)-dt*L*(dfdeta - kappa*lap_eta(i, j));
+                    eta(i,j)=eta(i,j)-dt*L*(dfdeta - L*kappa*lap_eta(i, j));
                 end
             end
             
@@ -89,30 +89,31 @@ for istep=1:nstep
     
     %Print results every "nprint" steps
     if (mod(istep, nprint)==0)
-        fname_area=sprintf('area_frac.txt');
-        out2=fopen(fname_area, 'a');
+        out2=fopen('area_frac.out', 'w');
         eta2=zeros(Nx, Ny);
-        %fprintf(out2,'%14.6e',ttime);
+        fprintf(out2,'%14.6e',ttime);
         for igrain=1:ngrain
             ncount=0;
             for i=1:Nx
                 for j=1:Ny
                     eta2(i, j)=eta2(i, j) + etas(i, j, igrain)^2;
                     if (etas(i, j, igrain) >= 0.5)
-                        ncount=ncount+1;
+                    ncount=ncount+1;
                     end
                 end
             end
             ncount=ncount/(Nx*Ny);
-            fprintf(out2,'%14.6e\n', ncount);
+            fprintf(out2,'%14.6e', ncount);
+            fprintf(out2, '\n');
         end
         save_res(Nx, Ny, dx, dy, istep, eta2);
-    end
+    end 
 end
 
 %% Initial Microstructure
 
 function [etas, ngrain, glist] = initial_struc(Nx, Ny)
+in=fopen('grain_25.inp','r');
 ngrain=2;
 
 x0=Nx/2;
@@ -175,7 +176,7 @@ fprintf(out, 'time_10.vtk\n');
 fprintf(out, 'ASCII\n');
 fprintf(out, 'DATASET STRUCTURED_GRID\n');
 
-% Co-ordinates of grid points
+% Co-ordinates of grif points
 fprintf(out, 'DIMENSIONS %5d %5d %5d\n', nx, ny, nz);
 fprintf(out, 'POINTS%7d float\n', npoints);
 
