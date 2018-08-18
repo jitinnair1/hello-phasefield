@@ -57,5 +57,7 @@ for k=1:10000
     
 end
 plot(conc);
-ylabel('Composition'), xlabel('Distance');
-title('1D Cahn Hilliard Profile')
+set(gcf, 'color', [1 1 1])
+ylabel('Composition', 'fontsize', 18), xlabel('Distance','fontsize', 18);
+title('1D Cahn Hilliard Profile', 'fontsize', 24)
+legend('Initial Profile','After Evolution')
