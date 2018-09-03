@@ -65,6 +65,16 @@ for istep=1:nstep
                     
                     %Integrate
                     eta(i,j)=eta(i,j)-dt*L*(dfdeta - kappa*lap_eta(i, j));
+                    
+                    %For small deviations
+                    if (eta(i,j) >= 0.9999)
+                        eta(i,j)=0.9999;
+                    end
+                    
+                    if (eta(i,j) < 0.00001)
+                        eta(i,j)=0.00001;
+                    end
+                    
                 end
             end
             
