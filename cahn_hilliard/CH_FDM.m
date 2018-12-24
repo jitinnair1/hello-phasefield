@@ -23,7 +23,7 @@ plot(conc_old, 'r*')
 hold on
 
 % Evolve the profile
-for k=1:10000
+for k=1:90000
     
     % Define g
     g=2*A*conc_old.*(1-conc_old).*(1-2*conc_old);

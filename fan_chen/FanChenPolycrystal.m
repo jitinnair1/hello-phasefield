@@ -1,28 +1,17 @@
-clear all;
-
-% System Parameters
-Nx=64;
-Ny=64;
-dx=0.5;
-dy=0.5;
-dt=0.3;
-kappa=1.0;
-L=1.0;
-nstep=1;
-nprint=1;
-ttime=0.0;
-dtime=0.005;
+%System Parameters
+Nx=64;Ny=64;
+dx=0.5;dy=0.5;dt=0.005;
+kappa=1.0;L=1.0;nstep=10000;nprint=100;
 
 %Declarartions
 eta=zeros(Nx, Ny);
 lap_eta=zeros(Nx, Ny);
 
 %Initial configuration
-[etas, ngrain, glist] = initial_struc(Nx, Ny);
+%[etas, ngrain, glist] = initial_struc(Nx, Ny);
 
 %Evolution
 for istep=1:nstep
-    ttime=ttime+dtime;
     for igrain=1:ngrain
         if (glist(igrain)==1)
             %Assign eta value to each grain
@@ -70,13 +59,12 @@ for istep=1:nstep
 
                     %For small deviations
                     if (eta(i,j) >= 0.9999)
-                        eta(i,j)=0.999999999;
+                        eta(i,j)=0.9999;
                     end
 
                     if (eta(i,j) < 0.00001)
-                        eta(i,j)=0.000000001;
+                        eta(i,j)=0.00001;
                     end
-
                 end
             end
 
