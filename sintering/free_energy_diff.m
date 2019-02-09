@@ -1,5 +1,5 @@
 function [dfcon, dfeta] = free_energy_diff(i, j, con, eta, etas, npart, iflag)
-format long
+%format long
 A=16.0;
 B=1.0;
 

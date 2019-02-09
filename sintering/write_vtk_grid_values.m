@@ -4,12 +4,12 @@ format long;
 
 %-- open output file
 
-fname=sprintf('time_%03d.vtk',istep);
+fname=sprintf('time_%04d.vtk',istep);
 out =fopen(fname,'w');
 
 nz=1;
 
-npoin =nx*ny*nz;
+npoin=nx*ny*nz;
 
 % start writing ASCII VTK file:
 
@@ -47,8 +47,6 @@ fprintf(out,'LOOKUP_TABLE default\n');
 
 for i = 1:nx
 for j = 1:ny
-ii=(i-1)*nx+j;
-
 fprintf(out,'%14.6e\n',data1(i,j));
 end
 end
@@ -59,17 +57,15 @@ fprintf(out,'LOOKUP_TABLE default\n');
 
 for i = 1:nx
 for j = 1:ny
-ii=(i-1)*nx+j;
-
 fprintf(out,'%14.6e\n',data2(i,j));
 end
 end
 
 fclose(out);
 
-% Make a results folder and move VTK files
-if (~exist('Results', 'dir')); mkdir('Results'); end%if
-dname="Results/"+fname;
-dname = convertStringsToChars(dname);
-movefile(fname, dname);
+% % Make a results folder and move VTK files
+% if (~exist('Results', 'dir')); mkdir('Results'); end%if
+% dname="Results/"+fname;
+% dname = convertStringsToChars(dname);
+% movefile(fname, dname);
 end %endfunction

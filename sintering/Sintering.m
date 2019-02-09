@@ -1,5 +1,5 @@
-tic
-clear all
+profile on
+clear sintering.m
 
 % System Size Parametrs
 Nx=200;
@@ -8,7 +8,7 @@ dx=0.5;
 dy=0.5;
 
 % Time Integration Parametrs
-nstep=100;
+nstep=50;
 nprint=50;
 dt=1.0e-4;
 
@@ -32,8 +32,8 @@ lapcon1=zeros(Nx, Ny);
 lapcon2=zeros(Nx, Ny);
 
 % Get initial configuration
-iflag=1;
-[npart, etas, con]=micro_sint_pre(Nx, Ny, npart, iflag);
+sflag=1;
+[npart, etas, con]=micro_sint_pre(Nx, Ny, npart, sflag);
 
 
 % Start Time Evolution
@@ -183,11 +183,17 @@ for istep=1:nstep
                 if eta(i, j) < 0.00001
                     eta(i, j)=0.00001;
                 end
-
-                etas(:, :, ipart)=eta;
+                
             end
         end
 
+        %reassign eta to etas
+        for i=1:Nx
+            for j=1:Ny
+                etas(i, j, ipart)=eta(i, j);
+            end
+        end
+        
     end % ipart
 
     % Print Results
@@ -209,4 +215,7 @@ for istep=1:nstep
     end
 
 end  % time iteration
-toc
+profile off
+
+% Save profile results for this run
+profsave(profile('info'), 'Metrics/v4/')
