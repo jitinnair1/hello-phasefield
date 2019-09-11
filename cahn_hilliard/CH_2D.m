@@ -1,3 +1,17 @@
+%{
+This program can be used to understand the evolution under the CH
+equation. Seeting A=0.0 below results in diffusion whereas when 
+A=1.0 results in phase sepeartion. 
+
+Similar behavior can be seen in the 1D version as well. 
+
+Yeah, surprise, surprise!  ¯\_(ツ)_/¯
+
+For the case when the starting composition is set as an average 
+composition with a small fluctation check the programs in
+phasefieldMATLAB/spinodal/
+%}
+
 clear all;
 dt=0.5;
 Nx=128;
@@ -10,13 +24,26 @@ more off;
 conc=zeros(Nx,Ny);
 
 % Initial profile
-for i=1:Nx
+for i=1:Nx/4
     for j=1:Ny
-        conc(i,j)=0.5 + ( 0.5 - rand() );
+        conc(i,j)=0.7;
     end
 end
 
-save_res(Nx, Ny, 1, 1, 0, conc);
+for i=(Nx/4):(3*Nx/4)
+    for j=1:Ny
+        conc(i,j)=0.3;
+    end
+end
+
+
+for i=(3*Nx/4):Nx
+    for j=1:Ny
+        conc(i,j)=0.7;
+    end
+end
+
+write_vtk_grid(Nx,Ny,1,1,0,conc);
 
 % Periodic Boundary
 halfNx=Nx/2;
@@ -27,8 +54,8 @@ delky=2*pi/Ny;
 % Evolve the profile
 
 
-for z=1:40
-    for p=1:25
+for z=1:10
+    for p=1:1000
         
         g=2*A*conc.*(1-conc).*(1-2*conc);
         
@@ -70,6 +97,6 @@ for z=1:40
         
         conc=real(ifft2(c_hat));
     end
-    save_res(Nx, Ny, 1, 1, z, conc);
+    write_vtk_grid(Nx,Ny,1,1,p*z,conc);
 end
 

@@ -4,6 +4,8 @@ Input grayescale image to output a set of images showing image
 evolving under CH equation. The output can then be converted to 
 a GIF to see an animation of the evolution.
 
+Example can be seen here: https://i.imgur.com/ea5fLG7.gifv
+
 %} 
 
 clear all;

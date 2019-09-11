@@ -3,6 +3,8 @@ function DiffExplicinFunc(N, dx, dt, m)
 %Parameters
 D=1.0;
 alpha=D*dt/((dx)^2);
+total_time=100;
+nstep=total_time/dt;
 
 %Declarartions
 conc=zeros(N, 1);
@@ -21,7 +23,7 @@ title('1D Diffusion Profile')
 hold on
 
 for j=1:1
-    for k=1:100
+    for k=1:nstep
         for i=1:N
             w=i-1;
             e=i+1;

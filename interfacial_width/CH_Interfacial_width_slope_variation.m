@@ -5,7 +5,7 @@
 %done by simple linear interpolation about the point of symmetry
 
 clear all;
-nstep=200:200:4000;
+nstep=200:200:6000;
 count=numel(nstep);
 width=zeros(1, count);
 

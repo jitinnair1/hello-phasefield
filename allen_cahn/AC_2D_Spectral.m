@@ -1,5 +1,9 @@
 clear all;
-Nx=128;Ny=128;L=1.0;
+Nx=128;
+Ny=128;
+dx=1.0;
+dy=1.0;
+L=1.0;
 dt=0.1;
 A=1.0;
 kappa=1.0;
@@ -16,9 +20,7 @@ for i=1:Nx
     end
 end
 
-mesh(phi);
-view(2)
-pause(1)
+write_vtk_grid(Nx,Ny,1,1,0,phi);
 
 %Periodic Boundary
 halfNx=Nx/2;
@@ -26,8 +28,8 @@ halfNy=Ny/2;
 delkx=2*pi/Nx;
 delky=2*pi/Ny;
 
-for s=1:10
-    for p=1:25
+for iprint=1:10
+    for istep=1:25
         
         %Define g
         g=A*phi.*(1-phi).*(1-2*phi);
@@ -66,7 +68,5 @@ for s=1:10
         
     end
     
-    mesh(phi);
-    view(2)
-    pause(1)
+    write_vtk_grid(Nx,Ny,1,1,iprint*istep,phi);
 end

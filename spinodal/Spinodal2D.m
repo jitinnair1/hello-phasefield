@@ -1,5 +1,7 @@
 clear all;
-dt=0.5;
+dt=0.1;
+dx=1.0;
+dy=1.0;
 Nx=128;
 Ny=128;
 A=1.0;
@@ -10,15 +12,35 @@ more off;
 conc=zeros(Nx,Ny);
 
 % Initial profile
-for i=1:Nx
+mflag=1; 
+
+% Running 2D code in 1D mode to check for errors
+% with random distribution only in x direction
+if(mflag==0)
+for i=1:1
     for j=1:Ny
         conc(i,j)=0.5 + ( 0.5 - rand() );
     end
 end
 
-mesh(conc);
-view(2)
-pause(0)
+for i=2:Nx
+    for j=1:Ny
+        conc(i,j)=conc(1,j);
+    end
+end
+end
+
+% Random distribution in both x and y direction
+if(mflag==1)
+for i=1:Nx
+    for j=1:Ny
+        conc(i,j)=0.5 + ( 0.5 - rand() );
+    end
+end
+end
+
+iprint=0; 
+write_vtk_grid(Nx,Ny,dx,dy,iprint,conc);
 
 % Periodic Boundary
 halfNx=Nx/2;
@@ -29,15 +51,14 @@ delky=2*pi/Ny;
 % Evolve the profile
 
 
-for z=1:4
-    for p=1:250
+for iprint=1:4
+    for p=1:1000
         
         g=2*A*conc.*(1-conc).*(1-2*conc);
         
         % FFT
         c_hat=fft2(conc);
         g_hat=fft2(g);
-        
         
         for i=1:Nx
             for j=1:Ny
@@ -72,9 +93,6 @@ for z=1:4
         
         conc=real(ifft2(c_hat));
     end
-    
-    mesh(conc);
-    view(2)
-    pause(0)
+    write_vtk_grid(Nx,Ny,dx,dy,iprint,conc);
 end
 

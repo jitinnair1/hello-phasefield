@@ -1,6 +1,8 @@
 clear all;
 Nx=128;
 Ny=128;
+dx=1.0;
+dy=1.0;
 L=1.0;
 dt=0.1;
 A=1.0;
@@ -27,12 +29,10 @@ for i=1:Nx
     end
 end
 
-mesh(phi);
-view(2)
-pause(0)
+write_vtk_grid(Nx,Ny,dx,dy,0,phi); 
 
-for s=1:6
-    for p=1:150
+for iprint=1:6
+    for istep=1:150
         
         %Define g
         g=A*phi.*(1-phi).*(1-2*phi);
@@ -72,9 +72,9 @@ for s=1:6
         phi=real(ifft2(phi_hat));
         
     end
-    mesh(phi);
-    view(2)
-    pause(0)
+    
+    % iprint*istep is the timestep while writing to file
+    write_vtk_grid(Nx,Ny,dx,dy,iprint*istep,phi); 
 end
 
 

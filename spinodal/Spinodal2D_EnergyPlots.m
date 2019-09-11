@@ -77,23 +77,26 @@ for z=1:plot_step
     end
     energy1(z)=cal_energy1(conc, Nx, Ny);
     energy2(z)=cal_energy2(conc, Nx, Ny);
-    mesh(conc);
-    view(2)
-    pause(0)
+%     mesh(conc);
+%     view(2)
+%     pause(0)
 end
 
 %% Variation of Bulk Energy
+figure();
 plot (energy1, 'r*');
 title('Variation of Bulk Energy with successive iterations')
 xlabel('Iteration No.'), ylabel('Bulk Energy')
 
 %% Variation of Gradient Energy
+figure();
 plot (energy2, 'b*');
 title('Variation of Gradient Energy with successive iterations')
 xlabel('Iteration No.'), ylabel('Gradient Energy')
 %print('Grad_Energy','-dpng')
 
 %% Variation of Total Energy
+figure();
 total_energy=energy1+energy2;
 plot (total_energy, 'g*');
 title('Variation of Total Energy with successive iterations')

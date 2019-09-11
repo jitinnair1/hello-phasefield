@@ -1,7 +1,11 @@
-%In this version, CH solution is by FFT and width calculation is by taking
-%derivative of conc using central difference followed by intepolation at
-%ends of the interface. This is a wrong approach. The interpolation should
-%be done about the point of symmetry as in v0 and v2 of the code.
+% In this version, CH solution is by FFT and width calculation is by taking
+% derivative of conc using central difference followed by intepolation at
+% ends of the interface. 
+%
+% NOTE:This is an incorrect approach. 
+%
+% The interpolation should be done about the point of symmetry as in v0 
+% of the code.
 
 clear all;
 D=1.0;dt=0.01;N=400;

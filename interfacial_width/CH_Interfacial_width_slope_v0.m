@@ -1,4 +1,6 @@
-% In this version, CH solution is by FFT and width calculation is done by taking derivative of conc using central difference followed by intepolation.
+% In this version, CH solution is by FFT and width calculation 
+% is done by taking derivative of conc using central difference 
+% followed by intepolation.
 
 clear all;
 D=1.0;dt=0.1;N=400;

@@ -1,9 +1,22 @@
-%In this version, CH solution is by FDM and width calculation is done 
-%by taking simple intepolation.
+% In this version, CH solution is by FDM and width calculation is done 
+% by taking simple intepolation using three points (point of symmetry,
+% one point before and one point after).
+%
+% NOTE:This is an incorrect approach. 
+%
+% The interpolation should be done about the point of symmetry as in v3 
+% of the code.
 
 clear all;
-D=1.0;dx=1;dt=0.1;N=800;A=1.0;kappa=1.0;nstep=2000;
-beta1=dt/(dx*dx);beta2=(2*kappa*beta1)/(dx*dx);
+D=1.0;
+dx=1;
+dt=0.1;
+N=800;
+A=1.0;
+kappa=1.0;
+nstep=2000;
+beta1=dt/(dx*dx);
+beta2=(2*kappa*beta1)/(dx*dx);
 
 % Declarations
 conc=zeros(N,1);
@@ -51,10 +64,15 @@ end
 % plot(conc_old);title('Composition vs. Distance')
 
 %% Calculating slope
-lim=N/4;lima=lim-1;limb=lim+1;
+lim=N/4;
+lima=lim-1;
+limb=lim+1;
+
 m=(conc_old(limb)-conc_old(lima))/(limb-lima);
+
 width_spec=1/m;
 
 % Collecting Interfacial results
 error_width=((width_spec-4.0)/4.0);
-display(width_spec);display(error_width);
+display(width_spec);
+display(error_width);

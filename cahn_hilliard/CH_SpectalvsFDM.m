@@ -18,7 +18,6 @@ col_labels={'bulk';'gradient';'total'};
 
 % Declarations
 concSpectral=zeros(N,1);
-c_prime=zeros(N, 1);
 
 % Initial profile
 for i=1:N
@@ -26,9 +25,6 @@ for i=1:N
         concSpectral(i)=1;
     end
 end
-
-% Define g
-g=zeros(N,1);
 
 
 % Periodic Boundary
@@ -61,7 +57,6 @@ for p=1:nstep
         k4=k2*k2;
         
         c_hat(i)=(c_hat(i)-dt*k2*g_hat(i))/(1+2*k4*dt);
-        
         
         concSpectral=real(ifft(c_hat));
     end    
@@ -160,6 +155,7 @@ for k=1:nstep
     end
     
 end
+figure();
 plot(conc_old, 'b*');
 hold on
 plot(concSpectral, 'r*');
@@ -198,7 +194,7 @@ difference=zeros(1, N);
 for i=1:N
     difference(i)=concSpectral(i)-conc_old(i);
 end
-clf;
+figure();
 plot(difference, 'g*')
 
 %% Interfacial Energy - FDM vs Spectral

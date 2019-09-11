@@ -2,14 +2,14 @@ profile on
 clear sintering.m
 
 % System Size Parametrs
-Nx=200;
-Ny=200;
+Nx=64;
+Ny=64;
 dx=0.5;
 dy=0.5;
 
 % Time Integration Parametrs
-nstep=50;
-nprint=50;
+nstep=10000;
+nprint=1000;
 dt=1.0e-4;
 
 % Model Specific Parameters
@@ -218,4 +218,4 @@ end  % time iteration
 profile off
 
 % Save profile results for this run
-profsave(profile('info'), 'Metrics/v4/')
+profsave(profile('info'), 'Metrics/v5/')
