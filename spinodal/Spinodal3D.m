@@ -4,6 +4,7 @@ Nx=64;
 Ny=64;
 Nz=64;
 A=1.0;
+noise=0.02;
 
 more off;
 
@@ -14,7 +15,7 @@ conc=zeros(Nx,Ny, Nz);
 for i=1:Nx
     for j=1:Ny
         for k=1:Nz
-        conc(i,j,k) = 0.5 + ( 0.5 - rand() );
+        conc(i,j,k) = 0.5 + noise( 0.5 - rand() );
         end
     end
 end

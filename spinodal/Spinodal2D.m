@@ -5,6 +5,7 @@ dy=1.0;
 Nx=128;
 Ny=128;
 A=1.0;
+noise=0.02;
 
 more off;
 
@@ -19,7 +20,7 @@ mflag=1;
 if(mflag==0)
 for i=1:1
     for j=1:Ny
-        conc(i,j)=0.5 + ( 0.5 - rand() );
+        conc(i,j)=0.5 + noise*( 0.5 - rand() );
     end
 end
 
@@ -34,7 +35,7 @@ end
 if(mflag==1)
 for i=1:Nx
     for j=1:Ny
-        conc(i,j)=0.5 + ( 0.5 - rand() );
+        conc(i,j)=0.5 + noise*( 0.5 - rand() );
     end
 end
 end

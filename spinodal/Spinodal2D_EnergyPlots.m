@@ -4,6 +4,7 @@ Nx=128;
 Ny=128;
 A=1.0;
 plot_step=50;
+noise=0.02;
 
 more off;
 
@@ -15,7 +16,7 @@ energy2=zeros(1, plot_step);
 % Initial profile
 for i=1:Nx
     for j=1:Ny
-        conc(i,j)=0.5 + ( 0.5 - rand() );
+        conc(i,j)=0.5 + noise*( 0.5 - rand() );
     end
 end
 
