@@ -2,7 +2,7 @@
 % derivative of conc using central difference followed by intepolation at
 % ends of the interface. 
 %
-% NOTE:This is an incorrect approach. 
+% NOTE:This is an incorrect approach. Retained for pedagogical reasons  ¯\_(ツ)_/¯
 %
 % The interpolation should be done about the point of symmetry as in v0 
 % of the code.
